@@ -64,7 +64,45 @@ public class ListSorter<T> {
 	 */
 	public List<T> mergeSort(List<T> list, Comparator<T> comparator) {
         // FILL THIS IN!
-        return null;
+        if(list.size() == 1 || list.size() == 0)
+			return list;
+		int mid=list.size()/2;
+		List<T> left=list.subList(0,mid);
+		List<T> right=list.subList(mid,list.size());
+		//System.out.println(left.toString());
+		//System.out.println(right.toString());
+		return merge(mergeSort(left,comparator),mergeSort(right, comparator),comparator);
+		
+	}
+	
+	private List<T> merge(List<T> left, List<T> right, Comparator<T> comp){
+		if(left.size() == 0)
+			return right;
+		if(right.size()== 0)
+			return left;
+		//System.out.println(left.toString());
+		//System.out.println(right.toString());
+		List<T> result=new ArrayList<T>();
+		int indL=0;
+		int indR=0;
+		while(indL < left.size()){
+			if(indR >= right.size()){
+				result.addAll(left.subList(indL,left.size()));
+				break;
+			} 
+			if(comp.compare(left.get(indL),right.get(indR)) <=0){
+				result.add(left.get(indL));
+				indL++;
+			}else{
+				result.add(right.get(indR));
+				indR++;
+			}
+		}
+		if(indR < right.size()){
+			result.addAll(right.subList(indR,right.size()));
+		}
+		System.out.println(result.toString());
+		return result;
 	}
 
 	/**
@@ -76,6 +114,15 @@ public class ListSorter<T> {
 	 */
 	public void heapSort(List<T> list, Comparator<T> comparator) {
         // FILL THIS IN!
+		PriorityQueue<T> queue=new PriorityQueue<T>();
+		for(T ele: list){
+			queue.offer(ele);
+		}
+		list.clear();
+		while(!queue.isEmpty()){
+			list.add(queue.poll());
+		}
+		
 	}
 
 	
@@ -90,7 +137,8 @@ public class ListSorter<T> {
 	 */
 	public List<T> topK(int k, List<T> list, Comparator<T> comparator) {
         // FILL THIS IN!
-        return null;
+        insertionSort(list,comparator);
+		return list.subList(list.size()-k,list.size());
 	}
 
 	
